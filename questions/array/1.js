@@ -1,4 +1,6 @@
 /**
+ * level：简单
+ * 
  * 两数之和
  * https://leetcode.cn/problems/two-sum/
  * 
