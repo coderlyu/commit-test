@@ -24,7 +24,7 @@
  * @return {number}
  */
 var removeDuplicates = function(nums) {
-    if (nums.length < 2) return nums
+    if (nums.length < 2) return nums.length
     let L = 0, R = L + 1
     while(R < nums.length) {
         if (nums[L] === nums[R]) R++
