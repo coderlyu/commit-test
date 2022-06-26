@@ -25,32 +25,23 @@ var threeSumClosest = function(nums, target) {
     if (nums.length < 3) return 0
     nums = nums.sort((a, b) => a - b)
     let L = 0, R = nums.length
-    let min = 0
-    let sum = 0
+    let min
+    let sum
     for (let i = 0; i < nums.length - 2; i++) {
         const element = nums[i];
         L = i + 1
         R = nums.length - 1
         while(L < R) {
             const sum = element + nums[L] + nums[R]
-            if (Math.abs(sum - target) < min) {
-                do {
-                    if (Math.abs(element + nums[L] + nums[R] - target) < min) {
-                        min = Math.min(, min)
-                    }
-                    if (sum - target > 0) {
-                        R--
-                    } else {
-                        L++
-                    }
-                } while(L < R)
-            } else if (sum - target > 0) R--
+            if (typeof min === 'undefined') min = sum
+            else if (Math.abs(target - sum) < Math.abs(target - min)) min = sum
+            if(sum >= target)R--
             else L++
         }
     }
     return min
 };
 
-const nums = [-1,2,1,-4], target = 1
+const nums = [ -1, 0, 1], target = 100 // -4, -1, 1, 2 .... -3, 0, 1, 2
 
 console.log(threeSumClosest(nums, target))
