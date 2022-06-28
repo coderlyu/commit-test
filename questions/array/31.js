@@ -26,16 +26,28 @@
  */
 var nextPermutation = function (nums) {
   if (nums.length < 2) return nums;
-  let L = nums.length - 1,
+  let L = nums.length - 2,
     R = nums.length - 1;
   // 左边最小数
-  while (L > 0 && nums[L] < nums[L - 1]) L--;
-  while (R > 0 && nums[R] > nums[R - 1]) R--;
-  swap(nums, L, R - 1);
-  // 右边升排序（L+1）
-  for (let i = L + 1; i <= nums.length - 1; i++) {
-    for (let j = i + 1; j <= nums.length - 1 - i; j++) {
-      if (nums[i] < nums[j]) swap(nums, i, j);
+  while (L >= 0 && nums[L] >= nums[L + 1]) L--;
+  if (L >= 0) {
+    while(R >= 0 && nums[R] <= nums[L]) R--
+    swap(nums, L, R)
+    let i = L + 1,
+    j = nums.length - 1
+    while(i < j) {
+      swap(nums, i, j)
+      i++
+      j--
+    }
+  } else {
+    // 没有找到，直接返回最小序列
+    // 翻转数组
+    let i=0, j = nums.length - 1
+    while(i < j) {
+      swap(nums, i, j)
+      i++
+      j--
     }
   }
   return nums;
