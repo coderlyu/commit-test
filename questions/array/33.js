@@ -24,36 +24,43 @@
 var search = function(nums, target) {
     let i = nums.indexOf(target)
     if (i === -1) return -1
-    else {
-        if (nums.length <= 2) {
-            return i
+    if (nums.length === 1) {
+        return nums[0] == target ? 0 : -1;
+    }
+    let L = 0, R = nums.length - 1
+    while (L <= R) {
+        let mid = Math.floor((L + R) / 2)
+        if(nums[mid] === target) return mid
+        if(nums[0] < nums[mid]) {
+            if (nums[0] > target && nums[mid])
+        } else {
+
         }
     }
-    let len = nums.length - 1
     // i - 1, i, i + 1
-    if (i - 1 >=0 && i + 1 <=len) {
-        let pre = nums[i - 1], cur = nums[i],next = nums[i + 1], flag = false, L = i - 1, R = i + 1
-        if (pre > cur && next > cur) {
-            // 左边升序，右边降序
-            // 左边
-            while(L > 0) {
-                if (nums[L - 1] > nums[L]) {
-                    flag = true
-                    break
-                }
-                L--
-            }
-            // 右边
-            while(R < len) {
-                if (nums[R] < nums[R + 1]) {
-                    flag = true
-                    break
-                }
-                R++
-            }
-        }
-        if (flag) return i
-    }
+    // if (i - 1 >=0 && i + 1 <=len) {
+    //     let pre = nums[i - 1], cur = nums[i],next = nums[i + 1], flag = false, L = i - 1, R = i + 1
+    //     if (pre > cur && next > cur) {
+    //         // 左边升序，右边降序
+    //         // 左边
+    //         while(L > 0) {
+    //             if (nums[L - 1] > nums[L]) {
+    //                 flag = true
+    //                 break
+    //             }
+    //             L--
+    //         }
+    //         // 右边
+    //         while(R < len) {
+    //             if (nums[R] < nums[R + 1]) {
+    //                 flag = true
+    //                 break
+    //             }
+    //             R++
+    //         }
+    //     }
+    //     if (flag) return i
+    // }
     return -1
 };
 // nums = [1,3], target = 1 ---> 0
