@@ -20,23 +20,25 @@
  * @return {string[][]}
  */
 var groupAnagrams = function(strs) {
-  if (strs.length < 2) return strs
+  if (strs.length < 2) return [strs]
   let map = new Map()
+
   for (const str of strs) {
-    let strArr = str.split('')
-    strArr.sort((a, b) => a - b)
-    strJoin = strArr.join('')
+    let strArr = str.split('').map(e => e.trim())
+    let strJoin = strArr.sort((a, b) => a > b ? 1: -1).join('')
     if(!map.has(strJoin)) {
       map.set(strJoin, [str])
     } else {
       let setArr = map.get(strJoin)
-      if(!strArr.includes(str)) strArr.push(str)
+      setArr.push(str)
     }
   }
   let result = []
-  console.log(map.entries())
+  for (const value of map.values()) {
+    result.push(value)
+  }
   return result
 };
 
-const strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+const strs = ["c","c"] // ["eat", "tea", "tan", "ate", "nat", "bat"] // ["eat", "tea", "tan", "ate", "nat", "bat"] // ["",""]
 console.log(groupAnagrams(strs));
