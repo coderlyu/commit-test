@@ -36,28 +36,8 @@
  */
 var isValidSudoku = function (board) {
   if (board.length === 0) return false;
-  const idxs = [
-    [-1, -1],
-    [0, -1],
-    [1, -1],
-    [-1, 0],
-    [1, 0],
-    [-1, 1],
-    [0, 1],
-    [1, 1],
-  ];
-  const centers = [
-    [1, 1],
-    [1, 4],
-    [1, 7],
-    [4, 1],
-    [4, 4],
-    [4, 7],
-    [7, 1],
-    [7, 4],
-    [7, 7],
-  ];
   let flag = true;
+  let map = Array.from({ length: 9 }).map(() => []);
   loop1: for (let i = 0; i < board.length; i++) {
     const ele = board[i];
     loop2: for (let j = 0; j < ele.length; j++) {
@@ -81,33 +61,21 @@ var isValidSudoku = function (board) {
         }
         s++;
       }
+    }
+  }
+  loop3: for (let i = 0; i < board.length; i++) {
+    const ele = board[i];
+    loop4: for (let j = 0; j < ele.length; j++) {
+      const inner = ele[j];
+      if (!(inner >= "1" && inner <= "9")) continue;
       // 3 * 3 方向 判断九个粗体实线内的是否合理
-      let v; // 在哪个3 * 3位置上
-      for (let u = 0; u < centers.length; u++) {
-        const center = centers[u];
-        if (Math.abs(j - center[0]) + Math.abs(i - center[1]) <= 2) {
-          v = u;
-          break;
-        }
+      let mapIdx = Math.floor(i / 3) * 3 + Math.floor(j / 3);
+      let set = map[mapIdx];
+      if (set.includes(inner)) {
+        flag = false;
+        break loop3;
       }
-      for (let r = 0; r < idxs.length; r++) {
-        let [x, y] = idxs[r];
-        if (
-          centers[v][0] + x >= 0 &&
-          centers[v][0] + x < ele.length &&
-          centers[v][1] + y >= 0 &&
-          centers[v][1] + y < board.length
-        ) {
-          if (
-            centers[v][0] + x != j - centers[v][0] &&
-            centers[v][1] + y !== i - centers[v][1] + y &&
-            board[centers[v][1] + y][centers[v][0] + x] === inner
-          ) {
-            flag = false;
-            break loop1;
-          }
-        }
-      }
+      set.push(inner);
     }
   }
   return flag;
@@ -124,6 +92,18 @@ const board = [
   [".", ".", ".", "4", "1", "9", ".", ".", "5"],
   [".", ".", ".", ".", "8", ".", ".", "7", "9"],
 ];
+// true
+// [
+//   ["5", "3", ".", ".", "7", ".", ".", ".", "."],
+//   ["6", ".", ".", "1", "9", "5", ".", ".", "."],
+//   [".", "9", "8", ".", ".", ".", ".", "6", "."],
+//   ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
+//   ["4", ".", ".", "8", ".", "3", ".", ".", "1"],
+//   ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
+//   [".", "6", ".", ".", ".", ".", "2", "8", "."],
+//   [".", ".", ".", "4", "1", "9", ".", ".", "5"],
+//   [".", ".", ".", ".", "8", ".", ".", "7", "9"],
+// ];
 // [
 //   [".", ".", "5", ".", ".", ".", ".", ".", "6"],
 //   [".", ".", ".", ".", "1", "4", ".", ".", "."],
@@ -162,4 +142,16 @@ const board = [
 //   [".", ".", ".", ".", "8", ".", ".", "7", "9"],
 // ];
 
+// false
+// [
+//   [".", ".", ".", ".", "5", ".", ".", "1", "."],
+//   [".", "4", ".", "3", ".", ".", ".", ".", "."],
+//   [".", ".", ".", ".", ".", "3", ".", ".", "1"],
+//   ["8", ".", ".", ".", ".", ".", ".", "2", "."],
+//   [".", ".", "2", ".", "7", ".", ".", ".", "."],
+//   [".", "1", "5", ".", ".", ".", ".", ".", "."],
+//   [".", ".", ".", ".", ".", "2", ".", ".", "."],
+//   [".", "2", ".", "9", ".", ".", ".", ".", "."],
+//   [".", ".", "4", ".", ".", ".", ".", ".", "."]
+// ]
 console.log(isValidSudoku(board));
